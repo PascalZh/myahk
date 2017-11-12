@@ -3,15 +3,8 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-;;------------------------Anne pro -------------------------;;
-;;------------------------------------------------------------------;;
-;;------------------------------------------------------------------;;
-;;------------------------------------------------------------------;;
-
-;禁用大写锁定
-;SetCapsLockState alwaysoff
-
-;亮度Win+7 or 8
+;{{{ Anne pro special
+;Light Win+7 or 8
 #7::
   AdjustScreenBrightness(-3)
   Return
@@ -20,7 +13,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
   AdjustScreenBrightness(3)
   Return
   
-;声音Win+9 or 0
+;Sound Win+9 or 0
 #9::
     Send {Volume_Down}
 Return
@@ -54,8 +47,9 @@ AdjustScreenBrightness(step) {
     }
 }
 
-;复制路径Ctrl+Shift+c
-^+c:: 
+;}}}
+;copy path
+CapsLock & c:: 
 Send,^c 
 Sleep,200 
 Clipboard=%clipboard%
@@ -63,37 +57,16 @@ Tooltip,%clipboard%
 Sleep,3000 
 Tooltip, 
 Return
-
-;;==============CapsLock????===================;;
-;;=================================================;;
-;;=================================================;;
-;;=================================================;;
-;;=================================================;;
-;;=================================================;;
-;;=================================================;;
-
-;;==??ESC???alt+capslock?????==;;
+;;==CapsLock -> Esc==;;
 CapsLock::Send, {ESC}
 return
-!CapsLock::
+CapsLock & Space::
 if getkeystate("capslock","T")=1
     SetCapsLockState, Off
 else
     SetCapsLockState, On
 Return
 
-;;===============????????==================;;u h b ??
-;;;-------------------???
-
-;CapsLock & u:: Send, {+}   ; uiop --> +-=_
-;CapsLock & i:: Send, -     ;
-;CapsLock & o:: Send, =     ;
-;CapsLock & p:: Send, _     ;
-;CapsLock & [:: Send, (     ; [] --> ()
-;CapsLock & ]:: Send, )     ;
-
-
-;;;------------------- ???
 ;===========================;H --> Left
 CapsLock & h::
 if getkeystate("shift") = 0
@@ -127,7 +100,7 @@ CapsLock & `;::Send, {PgUp}
 CapsLock & '::Send, {PgDn}
 CapsLock & [::Send, {Home}
 CapsLock & ]::Send, {End}
-;;===============左上==================;;
+;;===============left up==================;;
 ;;;------------------;;;
 CapsLock & r:: Send, {LWin down}{Right}{LWin up}
 return
@@ -140,129 +113,139 @@ CapsLock & s:: Send, ^{Tab}             ; Switch Tag    S = {Ctr + Tab}
 CapsLock & w:: Send, ^w                 ; Close Tag     W = {Ctr + W}
 CapsLock & q:: Send, !{F4}              ; Close Window  Q = {Alt + F4}
 
-;;; ----------------查单词-----------------------
-CapsLock & z::
-send ^c
-sleep 10
-url := "https://www.vocabulary.com/dictionary/" . clipboard
-if(strlen(url)<100)
-{
-run chrome.exe %url%
-}
-return
-
-
-;;============Capslock改造大法v1.0================;;
-;;;===================================================;;
-;;;===================================================;;
-;;=================================================;;
-;;=================================================;;
-;;=================================================;;
-;;=================================================;;
-;;=================================================;;
-
-
-
-
-
-
-
-;;{{{{{{{{{{{{{{{法语输入法}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}};;
-:*:f/e::{U+E9}
-:*:f\e::{U+E8}
-:*:f^e::{U+EA}
-:*:fsc::{U+E7}
-:*:f''i::{U+EF}
-:*:f^i::{U+EE}
-:*:f^u::{U+FB}
-:*:f\u::{U+F9}
-:*:f''u::{U+FC}
-:*:f^o::{U+F4}
-:*:f\a::{U+E0}
-:*:f^a::{U+E2}
-:*:foe::{U+153}
-CapsLock & e:: Send, {U+E9}
-CapsLock & a:: Send, {U+E0}
-
-
-
-;;*******????????*****************;;
-:://qq::
-run C:\Program Files (x86)\Tencent\QQ\Bin\QQ.exe
-return
-
-:://music::
-run C:\Program Files (x86)\Netease\CloudMusic\cloudmusic.exe
-return
-
-:://anki::
-run C:\Users\zsy\Desktop\Anki.lnk
-return
-
-:://dosbox::
-run C:\Users\Public\Desktop\DOSBox 0.74.lnk
-return
-
-:://enote::
-run C:\Users\zsy\Desktop\Evernote.lnk
-return
-
-:://vsc::
-run C:\Users\Public\Desktop\Visual Studio Code.lnk
-return
-
-:://vs::
-run C:\Users\zsy\Desktop\VS2015.lnk
-return
-
-:://bash::
-run C:\Users\Public\Desktop\Git Bash.lnk
-return
-
-:://ch::
-run C:\Users\Public\Desktop\Google Chrome.lnk
-return
-
-:://dw::
-run C:\Users\zsy\Desktop\Dreamweaver CS6.lnk
-return
-
-:://myroot::
-run C:\Users\zsy\Desktop\myroot.lnk
-return
-
-:://ahk::
-run C:\Users\zsy\Desktop\AutoHotkey.lnk
-return
-
-:://bdwp::
-run C:\Users\zsy\Desktop\bdwp.lnk
-return
-
-:://lt::
-run C:\Users\zsy\Desktop\Lantern.lnk
-return
-
-;:://dict::
-;run C:\Users\zsy\Desktop\dict.lnk
+;;; ----------------dict-----------------------
+;CapsLock & z::
+;send ^c
+;sleep 10
+;url := "https://www.vocabulary.com/dictionary/" . clipboard
+;if(strlen(url)<100)
+;{
+;run chrome.exe --app=%url% 
+;}
 ;return
 
-:://frdict::
+
+
+;;French
+:?*:e/f::{U+E9} ;'?' mean even if the hotstring appear in the word, it will immediately turn to the alternate.
+:?*:e\f::{U+E8}
+:?*:e^f::{U+EA}
+:?*:csf::{U+E7}
+:?*:i''f::{U+EF}
+:?*:i^f::{U+EE}
+:?*:u^f::{U+FB}
+:?*:u\f::{U+F9}
+:?*:u''f::{U+FC}
+:?*:o^f::{U+F4}
+:?*:a\f::{U+E0}
+:?*:a^f::{U+E2}
+:?*:oef::{U+153}
+
+
+
+;;*********Application***************;;
+::/qq::
+run C:\Program Files (x86)\Tencent\QQ\Bin\QQ.exe
+msgbox, , , Activated!, 0.5
+return
+
+::/m::
+run C:\Program Files (x86)\Netease\CloudMusic\cloudmusic.exe
+msgbox, , , Activated!, 0.5
+return
+
+::/anki::
+run C:\Users\zsy\Desktop\Anki.lnk
+msgbox, , , Activated!, 0.5
+return
+
+::/dosbox::
+run C:\Users\Public\Desktop\DOSBox 0.74.lnk
+msgbox, , , Activated!, 0.5
+return
+
+::/n::
+run C:\Users\zsy\Desktop\Evernote.lnk
+msgbox, , , Activated!, 0.5
+return
+
+;::/vsc::
+;run C:\Users\Public\Desktop\Visual Studio Code.lnk
+;return
+
+;::/vs::
+;run C:\Users\zsy\Desktop\VS2015.lnk
+;return
+
+;::/bash::
+;run C:\Users\Public\Desktop\Git Bash.lnk
+;return
+
+::/ch::
+run C:\Users\Public\Desktop\Google Chrome.lnk
+msgbox, , , Activated!, 0.5
+return
+
+::/dw::
+run C:\Users\zsy\Desktop\Dreamweaver CS6.lnk
+msgbox, , , Activated!, 0.5
+return
+
+::/ahk::
+run C:\Program Files\AutoHotkey\AutoHotkey.exe
+msgbox, , , Activated!, 0.5
+return
+
+::/bdwp::
+run C:\Users\zsy\Desktop\bdwp.lnk
+msgbox, , , Activated!, 0.5
+return
+
+;::/lt::
+;run C:\Users\zsy\Desktop\Lantern.lnk
+;return
+
+::/dict::
+run C:\Program Files (x86)\Microsoft Bing Dictionary\BingDict.exe
+msgbox, , , Activated!, 0.5
+return
+
+::/frdict::
 run http://www.frdic.com/
+msgbox, , , Activated!, 0.5
 return
 
-:://blbl::
+::/blbl::
 run https://www.bilibili.com/
+msgbox, , , Activated!, 0.5
 return
 
+::/cc::
+run C:\Users\Public\Desktop\CCleaner.lnk
+msgbox, , , Activated!, 0.5
+return
+
+CapsLock & v::
+run C:\Program Files (x86)\Vim\vim80\gvim.exe
+return
+
+::/cmd::
+Run  C:\Users\zsy\Downloads\cmd_markdown_win64\cmd_markdown_win64\Cmd Markdown.exe
+msgbox, , , Activated!, 0.5
+return
+
+;Often changing:
+
+CapsLock & x::
+run C:\Users\zsy\Desktop\root.lnk
+return
+
+CapsLock & z::
+Run, chrome.exe
+Return
 
 
-
-
-
-;====================??????======================;
+;====================HotString======================;
 :*:/mm/::zhang19980918
-:*:/reg1/::
-:*:/reg2/::
 
 
