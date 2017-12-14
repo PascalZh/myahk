@@ -2,7 +2,7 @@
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-
+ 
 ;{{{ Anne pro special
 ;Light Win+7 or 8
 #7::
@@ -48,6 +48,8 @@ AdjustScreenBrightness(step) {
 }
 
 ;}}}
+
+; CapsLock & ...{{{
 ;copy path
 CapsLock & c:: 
 Send,^c 
@@ -58,14 +60,14 @@ Sleep,3000
 Tooltip, 
 Return
 ;;==CapsLock -> Esc==;;
-CapsLock::Send, {ESC}
-return
-CapsLock & Space::
-if getkeystate("capslock","T")=1
-    SetCapsLockState, Off
-else
-    SetCapsLockState, On
-Return
+;CapsLock::Send, {ESC}
+;return
+;CapsLock & Space::
+;if getkeystate("capslock","T")=1
+;    SetCapsLockState, Off
+;else
+;    SetCapsLockState, On
+;Return
 
 ;===========================;H --> Left
 CapsLock & h::
@@ -123,10 +125,9 @@ CapsLock & q:: Send, !{F4}              ; Close Window  Q = {Alt + F4}
 ;run chrome.exe --app=%url% 
 ;}
 ;return
+; }}}
 
-
-
-;;French
+;;French {{{
 :?*:e/f::{U+E9} ;'?' mean even if the hotstring appear in the word, it will immediately turn to the alternate.
 :?*:e\f::{U+E8}
 :?*:e^f::{U+EA}
@@ -140,10 +141,9 @@ CapsLock & q:: Send, !{F4}              ; Close Window  Q = {Alt + F4}
 :?*:a\f::{U+E0}
 :?*:a^f::{U+E2}
 :?*:oef::{U+153}
+; }}}
 
-
-
-;;*********Application***************;;
+;;*********Application***************;;{{{
 ::/qq::
 run C:\Program Files (x86)\Tencent\QQ\Bin\QQ.exe
 msgbox, , , Activated!, 0.5
@@ -226,7 +226,7 @@ msgbox, , , Activated!, 0.5
 return
 
 CapsLock & v::
-run C:\Program Files (x86)\Vim\vim80\gvim.exe
+Run, C:\Program Files (x86)\Vim\vim80\gvim.exe, , Max
 return
 
 ::/cmd::
@@ -241,11 +241,23 @@ run C:\Users\zsy\Desktop\root.lnk
 return
 
 CapsLock & z::
-Run, chrome.exe
+Run, firefox.exe
 Return
 
+CapsLock & a::
+Run, C:\Users\zsy\projects
+Return
+; }}}
 
 ;====================HotString======================;
-:*:/mm/::zhang19980918
+:*?:/mm/::zhang19980918
 
-
+; YdDict Special{{{
+CapsLock & e::
+IfWinExist, YdDictMiniWnd
+{
+WinActivate
+return
+}
+Return
+; }}}
